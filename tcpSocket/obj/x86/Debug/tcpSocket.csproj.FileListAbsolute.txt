@@ -1,0 +1,10 @@
+C:\Users\Thomas\Documents\Projects\tcpSocket\tcpSocket\bin\Debug\tcpSocket.exe
+C:\Users\Thomas\Documents\Projects\tcpSocket\tcpSocket\bin\Debug\tcpSocket.pdb
+C:\Users\Thomas\Documents\Projects\tcpSocket\tcpSocket\obj\x86\Debug\tcpSocket.exe
+C:\Users\Thomas\Documents\Projects\tcpSocket\tcpSocket\obj\x86\Debug\tcpSocket.pdb
+C:\Users\Thomas\Documents\Projects\tcpSocket\tcpSocket\obj\x86\Debug\tcpSocket.csprojResolveAssemblyReference.cache
+C:\Users\Thomas\Documents\Projects\ServerChatHandler\tcpSocket\obj\x86\Debug\tcpSocket.exe
+C:\Users\Thomas\Documents\Projects\ServerChatHandler\tcpSocket\obj\x86\Debug\tcpSocket.pdb
+C:\Users\Thomas\Documents\Projects\ServerChatHandler\tcpSocket\bin\Debug\tcpSocket.exe
+C:\Users\Thomas\Documents\Projects\ServerChatHandler\tcpSocket\bin\Debug\tcpSocket.pdb
+C:\Users\Thomas\Documents\Projects\ServerChatHandler\tcpSocket\obj\x86\Debug\tcpSocket.csprojResolveAssemblyReference.cache
