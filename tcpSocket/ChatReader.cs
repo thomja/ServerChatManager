@@ -2,23 +2,22 @@
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using System.Net.NetworkInformation;
 using System.Threading;
+using System.Collections.Generic;
 
 class ChatReader
 {
-    public InputCleaner clean = new InputCleaner();
     public string myIPAddress;
     public ThreadStart ChatReading;
-    public Thread Reader;
+    public Thread Reader = null;
     public NetworkStream stream;
-    public IPManager addresses = new IPManager();
-    public int port = 80;
+    public int port = 81;
+    public List<Thread> myThreads = new List<Thread>();
+    public List<NetworkStream> connectedStreams = new List<NetworkStream>();
 
     public ChatReader()
     {
-        this.myIPAddress = GetIPAddress();
-        //Start();
+        myIPAddress = "192.168.0.196";
     }
 
     public void Start()
@@ -37,16 +36,9 @@ class ChatReader
             TcpListener server = null;
             try
             {
-                // TcpListener server = new TcpListener(port);
-                //server = new TcpListener(IPAddress.Parse(this.myIPAddress), 7777); <--- Returns incorrect local IP
-                server = new TcpListener(IPAddress.Parse(myIPAddress), port);
-
+                server = new TcpListener(IPAddress.Parse("192.168.0.196"), port);
                 // Start listening for client requests.
                 server.Start();
-
-                // Buffer for reading data
-                Byte[] bytes = new Byte[256];
-                String data = null;
 
                 // Enter the listening loop.
                 while (true)
@@ -54,35 +46,11 @@ class ChatReader
                     // Perform a blocking call to accept requests.
                     // You could also user server.AcceptSocket() here.
                     TcpClient client = server.AcceptTcpClient();
-
-                    data = null;
-
-                    // Get a stream object for reading and writing
                     stream = client.GetStream();
-
-                    int i;
-
-					//addresses.AddIP(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
-					//((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString() <-- Gets IP address!
-
-                    // Loop to receive all the data sent by the client.
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        // Translate data bytes to a ASCII string.
-                        data = Encoding.ASCII.GetString(bytes, 0, i);
-                        //Cleans info from string
-                        data = clean.StringCleaner(data);
-						if(data.StartsWith ("CONNECTINGPORT:")) { //&& addresses.findIP (((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString()) == false){
-							data = data.Replace ("CONNECTINGPORT:", "");
-                            addresses.AddClients(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString(), Int32.Parse(data));
-						} else {
-							addresses.sendMessages(data);
-						}
-                        break;
-                    }
-
-                    // Shutdown and end connection
-                    client.Close();
+                    ChatReading = new ThreadStart(ReadChat);
+                    Reader = new Thread(ChatReading);
+                    Reader.Start();
+                    myThreads.Add(Reader);
                     break;
                 }
             }
@@ -98,18 +66,41 @@ class ChatReader
         }
     }
 
-    public string GetIPAddress()
+    void ReadChat()
     {
-        IPHostEntry host;
-        string localIP = "?";
-        host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (IPAddress ip in host.AddressList)
+        NetworkStream stream = this.stream;
+        connectedStreams.Add(stream);
+        int mySpot = myThreads.Count - 1;
+        while (true)
         {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            // Get a stream object for reading and writing
+            Byte[] bytes = new Byte[256];
+            String data = null;
+            int i;
+            // Loop to receive all the data sent by the client.
+            try
             {
-                localIP = ip.ToString();
+                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                {
+                    // Translate data bytes to a ASCII string.
+                    data = Encoding.ASCII.GetString(bytes, 0, i);
+                    //Cleans info from string
+                    Console.WriteLine(data);
+                    for(int p = 0; p < connectedStreams.Count; p++)
+                    {
+                        if(p != mySpot)
+                        {
+                            connectedStreams[p].Write(Encoding.ASCII.GetBytes(data), 0, Encoding.ASCII.GetBytes(data).Length);
+                        }
+                    }
+                    break;
+                }
+            } catch(Exception e)
+            {
+                Console.WriteLine("Client disconnected, closing thread number {0}", mySpot);
+                Console.WriteLine(e);
+                myThreads[mySpot].Abort();
             }
         }
-        return localIP;
     }
 }
