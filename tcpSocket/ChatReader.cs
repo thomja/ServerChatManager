@@ -90,7 +90,15 @@ class ChatReader
                     {
                         if(p != mySpot)
                         {
-                            connectedStreams[p].Write(Encoding.ASCII.GetBytes(data), 0, Encoding.ASCII.GetBytes(data).Length);
+                            try
+                            {
+                                connectedStreams[p].Write(Encoding.ASCII.GetBytes(data), 0, Encoding.ASCII.GetBytes(data).Length);
+                            } catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                connectedStreams[p].Dispose();
+                                connectedStreams.Remove(connectedStreams[p]);
+                            }
                         }
                     }
                     break;
@@ -98,8 +106,8 @@ class ChatReader
             } catch(Exception e)
             {
                 Console.WriteLine("Client disconnected, closing thread number {0}", mySpot);
-                Console.WriteLine(e);
                 myThreads[mySpot].Abort();
+                Console.WriteLine(e);
             }
         }
     }
