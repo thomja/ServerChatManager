@@ -18,3 +18,8 @@ C:\Users\Thomas\Documents\GitHub\ServerChatManager\tcpSocket\obj\x86\Debug\tcpSo
 C:\Users\Thomas\Documents\GitHub\ServerChatManager\tcpSocket\bin\Debug\tcpSocket.exe
 C:\Users\Thomas\Documents\GitHub\ServerChatManager\tcpSocket\bin\Debug\tcpSocket.pdb
 C:\Users\Thomas\Documents\GitHub\ServerChatManager\tcpSocket\obj\x86\Debug\ServerChatHandler.csprojResolveAssemblyReference.cache
+E:\BACKUP\ServerChatManager\tcpSocket\obj\x86\Debug\tcpSocket.exe
+E:\BACKUP\ServerChatManager\tcpSocket\obj\x86\Debug\tcpSocket.pdb
+E:\BACKUP\ServerChatManager\tcpSocket\bin\Debug\tcpSocket.exe
+E:\BACKUP\ServerChatManager\tcpSocket\bin\Debug\tcpSocket.pdb
+E:\BACKUP\ServerChatManager\tcpSocket\obj\x86\Debug\ServerChatHandler.csprojResolveAssemblyReference.cache

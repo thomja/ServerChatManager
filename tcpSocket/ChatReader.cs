@@ -11,13 +11,14 @@ class ChatReader
     public ThreadStart ChatReading;
     public Thread Reader = null;
     public NetworkStream stream;
-    public int port = 81;
+    public int port = 7777; //Make sure to have this port forwarded in your router
     public List<Thread> myThreads = new List<Thread>();
     public List<NetworkStream> connectedStreams = new List<NetworkStream>();
 
     public ChatReader()
     {
-        myIPAddress = "192.168.0.196";
+        //Public IP goes here
+        myIPAddress = "XX.XX.XX.XX";
     }
 
     public void Start()
@@ -36,7 +37,7 @@ class ChatReader
             TcpListener server = null;
             try
             {
-                server = new TcpListener(IPAddress.Parse("192.168.0.196"), port);
+                server = new TcpListener(IPAddress.Any, port);
                 // Start listening for client requests.
                 server.Start();
 
